@@ -23,8 +23,8 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
         <h1>Pàgina de resposta</h1>
         <%
            if(application.getAttribute("llistaRegistres") == null){
-                ArrayList<org.me.hello.NameHandler> arrayObjectes_3 = new ArrayList<org.me.hello.NameHandler>();
-                application.setAttribute("llistaRegistres", arrayObjectes_3);
+                ArrayList<org.me.hello.NameHandler> arrayObjectes = new ArrayList<org.me.hello.NameHandler>();
+                application.setAttribute("llistaRegistres", arrayObjectes);
             }
         %>
         

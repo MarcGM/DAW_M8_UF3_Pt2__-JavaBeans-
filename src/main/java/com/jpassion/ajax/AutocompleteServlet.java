@@ -9,42 +9,34 @@ import java.util.*;
 
 public class AutocompleteServlet extends HttpServlet{
     
-    private ServletContext context;
     private HashMap employees = new HashMap();
- 
-    public void init(ServletConfig config) throws ServletException {
-        this.context = config.getServletContext();
-        employees.put("1", new EmployeeBean("1","Greg","Murray"));
-        employees.put("2", new EmployeeBean("2","Greg","Murphy"));
-        employees.put("3", new EmployeeBean("3","George","Murphy"));
-        employees.put("4", new EmployeeBean("4","George","Murray"));
-        employees.put("5", new EmployeeBean("5","Peter","Jones"));
-        employees.put("6", new EmployeeBean("6","Amber","Jones"));
-        employees.put("7", new EmployeeBean("7","Amy","Jones"));
-        employees.put("8", new EmployeeBean("8","Bee","Jones"));
-        employees.put("9", new EmployeeBean("9","Beth","Johnson"));
-        employees.put("10", new EmployeeBean("10","Cindy","Johnson"));
-        employees.put("11", new EmployeeBean("11","Cindy","Murphy"));
-        employees.put("12", new EmployeeBean("12","Duke","Hazerd"));
+    private ArrayList<org.me.hello.NameHandler> arrayObjectes = new ArrayList<org.me.hello.NameHandler>();
+    
+    public void init(ServletConfig config) throws ServletException{
+        //employees.put("1", new EmployeeBean("1","Greg","Murray"));
     }
 
-    public  void doGet(HttpServletRequest request, HttpServletResponse  response) throws IOException, ServletException{
+    public void doGet(HttpServletRequest request, HttpServletResponse  response) throws IOException, ServletException{
+        arrayObjectes = (ArrayList<org.me.hello.NameHandler>) getServletContext().getAttribute("llistaRegistres");
+        possarObjectesHashMap();
+        
 	    String action = request.getParameter("action");
         String targetId = request.getParameter("id");
         StringBuffer sb = new StringBuffer();
         if (targetId != null) targetId = targetId.trim().toLowerCase();
         boolean namesAdded = false;
 		if ("nomICognom".equals(action)) {
+
             Iterator it = employees.keySet().iterator();
             while (it.hasNext()) {
                 String id = (String)it.next();
-                EmployeeBean e = (EmployeeBean)employees.get(id);
+                org.me.hello.NameHandler e = (org.me.hello.NameHandler)employees.get(id);
                 // simple matching only for start of first or last name
-                if (e.getFirstName().toLowerCase().startsWith(targetId) && !targetId.equals("")){
+                if (e.getNomICognom().toLowerCase().startsWith(targetId) && !targetId.equals("")){
                     sb.append("<employee>");
-                    sb.append("<id>" + e.getId() + "</id>");
-                    sb.append("<firstName>" + e.getFirstName() + "</firstName>");
-                    sb.append("<lastName>" + e.getLastName() + "</lastName>");
+                    sb.append("<id>" + e.getNomUsuari()+ "</id>");
+                    sb.append("<firstName>" + e.getNomICognom()+ "</firstName>");
+                    sb.append("<lastName>" + e.getTelefon()+ "</lastName>");
                     sb.append("</employee>");
                     namesAdded = true;
                 }
@@ -58,7 +50,7 @@ public class AutocompleteServlet extends HttpServlet{
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             }
 	    } 
-        if ("telefon".equals(action)){
+        /*if ("telefon".equals(action)){
             Iterator it = employees.keySet().iterator();
             while (it.hasNext()){
                 String id = (String)it.next();
@@ -81,7 +73,16 @@ public class AutocompleteServlet extends HttpServlet{
                 //nothing to show
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             }
-		}
+		}*/
         //context.getRequestDispatcher("/employees.jsp").forward(request, response);
+    }
+    
+    public void possarObjectesHashMap(){
+        int llargadaArrayObjectes = arrayObjectes.size();
+        int cont;
+        
+        for(cont=0; cont<llargadaArrayObjectes; cont++){
+            employees.put(cont, arrayObjectes.get(cont));
+        }
     }
 }
