@@ -71,19 +71,33 @@
                 }
             }
 
+//            function parseMessages() {
+//                if (!names)
+//                    names = document.getElementById("names");
+//                clearTable();
+//                var employees = req.responseXML.getElementsByTagName("employees")[0];
+//                for (loop = 0; loop < employees.childNodes.length; loop++) {
+//                    var employee = employees.childNodes[loop];
+//                    var firstName = employee.getElementsByTagName("firstName")[0];
+//                    var lastName = employee.getElementsByTagName("lastName")[0];
+//                    var employeeId = employee.getElementsByTagName("id")[0];
+//                    appendEmployee(firstName.childNodes[0].nodeValue,
+//                            lastName.childNodes[0].nodeValue,
+//                            employeeId.childNodes[0].nodeValue);
+//                }
+//            }
             function parseMessages() {
                 if (!names)
                     names = document.getElementById("names");
                 clearTable();
-                var employees = req.responseXML.getElementsByTagName("employees")[0];
-                for (loop = 0; loop < employees.childNodes.length; loop++) {
-                    var employee = employees.childNodes[loop];
-                    var firstName = employee.getElementsByTagName("firstName")[0];
-                    var lastName = employee.getElementsByTagName("lastName")[0];
-                    var employeeId = employee.getElementsByTagName("id")[0];
-                    appendEmployee(firstName.childNodes[0].nodeValue,
-                            lastName.childNodes[0].nodeValue,
-                            employeeId.childNodes[0].nodeValue);
+                var usuaris = req.responseXML.getElementsByTagName("usuaris")[0];
+                afegirCapcalera();
+                for (loop = 0; loop < usuaris.childNodes.length; loop++) {
+                    var usuari = usuaris.childNodes[loop];
+                    var nomICognom = usuari.getElementsByTagName("nomICognom")[0];
+                    var telefon = usuari.getElementsByTagName("telefon")[0];
+                    var correuE = usuari.getElementsByTagName("correuE")[0];
+                    appendUsuari(nomICognom.childNodes[0].nodeValue, telefon.childNodes[0].nodeValue, correuE.childNodes[0].nodeValue);
                 }
             }
 
@@ -94,10 +108,18 @@
                     }
                 }
             }
-
-            function appendEmployee(firstName, lastName, employeeId) {
-                var firstNameCell;
-                var lastNameCell;
+            
+            function afegirCapcalera() {
+                    row = document.createElement("tr");
+                    nameCell = document.createElement("td");
+                    row.appendChild(nameCell);
+                    names.appendChild(row);
+            }
+            
+            function appendUsuari(nomICognom, telefon, correuE) {
+                var nomICognomCell;
+                var correuECell;
+                var telefonCell;
                 if (isIE) {
                     row = names.insertRow(names.rows.length);
                     nameCell = row.insertCell(0);
@@ -114,13 +136,13 @@
                 nameCell.setAttribute("border", "0");
                 var linkElement = document.createElement("a");
                 linkElement.setAttribute("style", "text-decoration: none ");
-                linkElement.setAttribute("href", "autocomplete?action=lookup&id="
-                        + employeeId);
+                linkElement.setAttribute("href", "autocomplete?action=nomICognom&id="
+                        + nomICognom);
                 var nameFontElement = document.createElement("font");
                 nameFontElement.setAttribute("size", "+1");
                 nameFontElement.setAttribute("color", "black");
-                nameFontElement.appendChild(document.createTextNode(firstName + " "
-                        + lastName));
+                nameFontElement.appendChild(document.createTextNode(nomICognom + " "
+                        + telefon + " " + correuE));
                 linkElement.appendChild(nameFontElement);
                 nameCell.appendChild(linkElement);
             }
@@ -130,14 +152,8 @@
 </head>
     <body onload="init()">
 
-        <h1>Auto-Completion using Asynchronous JavaScript and XML (AJAX)</h1>
+        <h1>Buscador amb AJAX</h1>
         <hr />
-        <p>This example shows how you can do real time auto-completion
-            using AJAX interactions.</p>
-        <p>In the form below enter a name. Possible names that will be
-            completed are displayed beneath the form. Click on one of the
-            selections to see the employee details. Try typing &quot;Greg&quot,
-            &quot;Murray&quot;, &quot;Jones&quot;, or "&quot;Cindy&quot;.</p>
 
         <form name="autofillform" action="autocomplete" method="get">
             <input type="hidden" name="action" value="lookupbyname" />
@@ -145,7 +161,7 @@
                 <tr>
                     <td><b>Nom i cognom:</b></td>
                     <td>
-                        <input type="text" size="20" id="nomICognom" name="campNomICognom" onkeyup="doCompletion('nomICognom');">
+                        <input type="text" size="20" id="nomICognom" name="nomICognom" onkeyup="doCompletion('nomICognom');">
                     </td>
                     <td align="left">
                     </td>
@@ -164,7 +180,13 @@
             </table>
         </form>
         <div style="position: absolute; top: 170px; left: 140px" id="menu-popup">
-            <table id="names" bgcolor="#FFFAFA" border="1" bordercolor="black" cellspacing="0" cellpadding="0"> </table>
+            <table id="names" bgcolor="#FFFAFA" border="1" bordercolor="black" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td>Nom i cognom</td>
+                    <td>Número de teléfon</td>
+                    <td>Correu electrònic</td>
+                </tr>
+            </table>
         </div>
     </body>
 </html>

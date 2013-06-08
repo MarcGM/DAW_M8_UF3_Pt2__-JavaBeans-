@@ -1,7 +1,7 @@
 
 package org.me.hello;
 
-public class NameHandler {
+public final class NameHandler {
 
     private String nomUsuari;
     private String nomICognom;

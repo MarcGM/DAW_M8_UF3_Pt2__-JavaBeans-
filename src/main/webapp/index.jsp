@@ -18,7 +18,6 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
         <title>DAW_M8_UF3_PT2__Formulari de registre</title>
     </head>
     <body>
-
         <h1>Formulari de registre</h1>
     
         <form action="response.jsp">
@@ -32,6 +31,7 @@ on Libraries node in Projects view can be used to add the JSTL 1.1 library.
             <br /><br /> 
            <input type="submit" value="Donar d'alta" />
         </form>
-        
+        <br /><br />
+        <a href="buscador.jsp">Buscador</a>
     </body>
 </html>
